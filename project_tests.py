@@ -42,6 +42,7 @@ class TmpMock(object):
     """
     Mock a attribute.  Restore attribute when exiting scope.
     """
+
     def __init__(self, module, attrib_name):
         self.original_attrib = deepcopy(getattr(module, attrib_name))
         setattr(module, attrib_name, mock.MagicMock())
@@ -100,7 +101,7 @@ def test_optimize(optimize):
     learning_rate = tf.placeholder(tf.float32)
     logits, train_op, cross_entropy_loss = optimize(layers_output, correct_label, learning_rate, num_classes)
 
-    _assert_tensor_shape(logits, [2*3*4, num_classes], 'Logits')
+    _assert_tensor_shape(logits, [2 * 3 * 4, num_classes], 'Logits')
 
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
@@ -119,6 +120,7 @@ def test_train_nn(train_nn):
         shape = [batach_size_parm, 2, 3, 3]
         return np.arange(np.prod(shape)).reshape(shape)
 
+    global_step = tf.Variable(0, trainable=True)  # noqa
     train_op = tf.constant(0)
     cross_entropy_loss = tf.constant(10.11)
     input_image = tf.placeholder(tf.float32, name='input_image')
